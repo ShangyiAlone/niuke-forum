@@ -12,6 +12,12 @@
 3.  Java 8
 
 #### 使用说明
+安装配置：
+1.  kafka安装目录下的 config/zookeeper.properties 将dataDir设置为自定义的数据存放地址
+     同理 对config/zookeeper.properties中的log.dirs也进行相应设置
+2.  consumer.properties中 设置 group.id=community-consumer-group
+3.  elasticsearch安装目录下 config/elasticsearch.yml 设置  cluster.name: nowcoder
+
 启动项目前：
 1.  本地启动redis
 2.  进入kafka安装目录 用命令行启动zookeeper：bin\windows\zookeeper-server-start.bat config\zookeeper.properties
