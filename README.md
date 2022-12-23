@@ -25,8 +25,8 @@
 4.  进入elasticsearch目录下的bin文件夹 双击elasticsearch.bat 启动服务
 
 关闭项目前 一定不能直接关闭kafka的命令窗口！！而是通过输入指令来关闭服务：
-1.  先关闭kafka：bin\windows\kafka-server-start-stop.bat
-2.  再关闭zookeeper：bin\windows\zookeeper-server-start-stop.bat
+1.  先关闭kafka：bin\windows\kafka-server-stop.bat
+2.  再关闭zookeeper：bin\windows\zookeeper-server-stop.bat
 
 
 #### 参与贡献
