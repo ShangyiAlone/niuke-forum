@@ -3,21 +3,25 @@
 #### 介绍
 牛客论坛
 
-#### 软件架构
-软件架构说明
 
 
-#### 安装教程
+#### 软件版本
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  kafka_2.12-2.3.0
+2.  elasticsearch-6.4.3
+3.  Java 8
 
 #### 使用说明
+启动项目前：
+1.  本地启动redis
+2.  进入kafka安装目录 用命令行启动zookeeper：bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+3.  不要关闭以上命令窗口 新开一个命令窗口启动kafka：bin\windows\kafka-server-start.bat config\server.properties
+4.  进入elasticsearch目录下的bin文件夹 双击elasticsearch.bat 启动服务
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+关闭项目前 一定不能直接关闭kafka的命令窗口！！而是通过输入指令来关闭服务：
+1.  先关闭kafka：bin\windows\kafka-server-start-stop.bat
+2.  再关闭zookeeper：bin\windows\zookeeper-server-start-stop.bat
+
 
 #### 参与贡献
 
@@ -27,11 +31,5 @@
 4.  新建 Pull Request
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+
