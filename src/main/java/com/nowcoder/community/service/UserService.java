@@ -52,7 +52,29 @@ public class UserService implements CommunityConstant {
         }
         return user;
     }
-
+    public Map<String, Object> changePassword(String email, String password) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(password)) {
+            map.put("passwordMsg", "密码不能为空！");
+            return map;
+        }
+        if (StringUtils.isBlank(email)) {
+            map.put("emailMsg", "邮箱不能为空！");
+            return map;
+        }
+        User user = userMapper.selectByEmail(email);
+        if (user == null) {
+            map.put("emailMsg", "邮件未注册！请重新检查！");
+            return map;
+        }
+        password = CommunityUtil.md5(password + user.getSalt());
+        int rows = userMapper.updatePassword(user.getId(), password);
+        // redis 更新需要清除user缓存
+        clearCache(user.getId());
+        System.out.println("修改成功");
+        map.put("success", rows);
+        return map;
+    }
     public Map<String, Object> register(User user) {
         Map<String, Object> map = new HashMap<>();
 
