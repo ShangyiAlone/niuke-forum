@@ -14,11 +14,13 @@
 #### 使用说明
 安装配置：
 
-1.  执行sql文件夹下的三个sql文件 并在配置文件对数据库进行相应配置
-2.  kafka安装目录下的 config/zookeeper.properties 将dataDir设置为自定义的数据存放地址
+1. 执行sql文件夹下的三个sql文件 并在配置文件对数据库进行相应配置
+2. kafka安装目录下的 config/zookeeper.properties 将dataDir设置为自定义的数据存放地址
      同理 对config/zookeeper.properties中的log.dirs也进行相应设置
-3.  consumer.properties中 设置 group.id=community-consumer-group
-4.  elasticsearch安装目录下 config/elasticsearch.yml 设置  cluster.name: nowcoder
+3. consumer.properties中 设置 group.id=community-consumer-group
+4. elasticsearch安装目录下 config/elasticsearch.yml 设置  cluster.name: nowcoder
+5. 安装qq群里的RKCSSVA.exe,(wkhtmltopdf)到目录d:/work/wkhtmltopdf下，也可以自己修改application.properties
+
 
 启动项目前：
 1.  本地启动redis
