@@ -19,8 +19,10 @@
      同理 对config/zookeeper.properties中的log.dirs也进行相应设置
 3. consumer.properties中 设置 group.id=community-consumer-group
 4. elasticsearch安装目录下 config/elasticsearch.yml 设置  cluster.name: nowcoder
-5. 安装qq群里的RKCSSVA.exe,(wkhtmltopdf)到目录d:/work/wkhtmltopdf下，也可以自己修改application.properties
-
+5. 安装qq群里的RKCSSVA.exe(wkhtmltopdf) 到目录d:/work/wkhtmltopdf下 也可以自己修改application.properties
+6. 因为utf-8不兼容富文本编辑器的emoji表情 故需要将discuss__post表中对应的content列进行字符集的重新配置 
+    详见这两篇博客 https://blog.csdn.net/qq_43461877/article/details/103101859    
+                             https://www.cnblogs.com/liupeifeng3514/p/10214392.html
 
 启动项目前：
 1.  本地启动redis

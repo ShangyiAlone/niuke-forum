@@ -7,6 +7,7 @@ import com.nowcoder.community.controller.interceptor.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -45,5 +46,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(dataInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
     }
+    //
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 将虚拟路径和绝对路径进行映射
+        // 将实际的本地磁盘路径映射为tomcat下的/uploads路径
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:E:/group_repository/uploads/");
+    }
+
 
 }

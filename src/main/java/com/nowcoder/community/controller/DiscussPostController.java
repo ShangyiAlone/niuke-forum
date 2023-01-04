@@ -6,10 +6,8 @@ import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
 import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
-import com.nowcoder.community.util.CommunityConstant;
-import com.nowcoder.community.util.CommunityUtil;
-import com.nowcoder.community.util.HostHolder;
-import com.nowcoder.community.util.RedisKeyUtil;
+import com.nowcoder.community.util.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 @Controller
@@ -46,14 +46,61 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @RequestMapping(path = "/add", method = RequestMethod.POST)
+    @RequestMapping(path = "/uploadPost", method = RequestMethod.GET)
+    public String getPostPage() {
+        return "/site/add-post";
+    }
+
+    @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
     @ResponseBody
+    // 上传帖子中的图片至本地服务器
+    public WangEditor uploadImg(@Param("file") MultipartFile file) {
+        //本地使用,上传位置
+        String rootPath ="E://group_repository//uploads//";
+        //文件的完整名称,如spring.jpeg
+        String filename = file.getOriginalFilename();
+        //文件名,如spring
+        String name = filename.substring(0,filename.indexOf("."));
+        //文件后缀,如.jpeg
+        String suffix = filename.substring(filename.lastIndexOf("."));
+        //目标文件
+        File descFile = new File(rootPath+File.separator+File.separator+filename);
+        int i = 1;
+        //若文件存在重命名
+        String newFilename = filename;
+        while(descFile.exists()) {
+            newFilename = name+"("+i+")"+suffix;
+            String parentPath = descFile.getParent();
+            descFile = new File(parentPath+File.separator+newFilename);
+            i++;
+        }
+        //判断目标文件所在的目录是否存在
+        if(!descFile.getParentFile().exists()) {
+            //如果目标文件所在的目录不存在，则创建父目录
+            descFile.getParentFile().mkdirs();
+        }
+        //将内存中的数据写入磁盘
+        try {
+            file.transferTo(descFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //完整的url
+        String fileUrl =  "http://localhost:8080/community/uploads/"+newFilename;
+        //System.out.println(fileUrl);
+        String[] data = { fileUrl };
+        WangEditor we = new WangEditor(data);
+        return we;
+    }
+
+    @RequestMapping(path = "/uploadPost", method = RequestMethod.POST)
+    @ResponseBody
+    // 将帖子内容存入数据库
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
         if (user == null) {
             return CommunityUtil.getJSONString(403, "你还没有登录哦!");
         }
-
         DiscussPost post = new DiscussPost();
         post.setUserId(user.getId());
         post.setTitle(title);
@@ -76,11 +123,11 @@ public class DiscussPostController implements CommunityConstant {
         // 报错的情况,将来统一处理.
         return CommunityUtil.getJSONString(0, "发布成功!");
     }
-
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
+
         model.addAttribute("post", post);
         // 作者
         User user = userService.findUserById(post.getUserId());
