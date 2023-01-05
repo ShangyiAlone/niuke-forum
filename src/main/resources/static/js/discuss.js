@@ -11,6 +11,7 @@ function like(btn, entityType, entityId, entityUserId, postId) {
         function(data) {
             data = $.parseJSON(data);
             if(data.code == 0) {
+                console.log(data);
                 $(btn).children("i").text(data.likeCount);
                 $(btn).children("b").text(data.likeStatus==1?'已赞':"赞");
             } else {
@@ -44,6 +45,24 @@ function share(btn, entityType, entityId, entityUserId, postId) {
 // 延时刷新
 function flush(shareUrl) {
     window.location.href=shareUrl;
+}
+
+function collect(btn, entityType, entityId, entityUserId, postId) {
+    $.post(
+        CONTEXT_PATH + "/collect",
+        {"entityType":entityType,"entityId":entityId,"entityUserId":entityUserId,"postId":postId},
+        function(data) {
+            data = $.parseJSON(data);
+            if(data.code == 0) {
+                console.log(data);
+                console.log(data.CollectCount);
+                $(btn).children("i").text(data.CollectCount);
+                $(btn).children("b").text(data.CollectStatus==1?'已收藏':"收藏");
+            } else {
+                alert(data.msg);
+            }
+        }
+    );
 }
 
 // 置顶

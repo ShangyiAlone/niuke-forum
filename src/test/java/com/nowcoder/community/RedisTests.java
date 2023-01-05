@@ -30,6 +30,7 @@ public class RedisTests {
         System.out.println(redisTemplate.opsForValue().get(redisKey));
         System.out.println(redisTemplate.opsForValue().increment(redisKey));
         System.out.println(redisTemplate.opsForValue().decrement(redisKey));
+        System.out.println(redisTemplate.opsForValue().decrement(redisKey));
     }
 
     @Test
@@ -41,6 +42,7 @@ public class RedisTests {
 
         System.out.println(redisTemplate.opsForHash().get(redisKey, "id"));
         System.out.println(redisTemplate.opsForHash().get(redisKey, "username"));
+
     }
 
     @Test

@@ -12,6 +12,7 @@
         user_id, entity_type, entity_id, target_id, content, status, create_time
     </sql>
 
+    <!--  检索帖子  -->
     <select id="selectCommentsByEntity" resultType="Comment">
         select <include refid="selectFields"></include>
         from comment

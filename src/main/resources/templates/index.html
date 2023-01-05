@@ -97,7 +97,7 @@
 								<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
 							</h6>
 							<div class="text-muted font-size-12">
-								<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+								<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布时间 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
 								<ul class="d-inline float-right">
 									<li class="d-inline ml-2">赞 <span th:text="${map.likeCount}">11</span></li>
 									<li class="d-inline ml-2">|</li>
@@ -134,8 +134,8 @@
 			<div class="container">
 				<div class="row">
 					<!-- 二维码 -->
-					<div class="col-4 qrcode">  ../img/weixin.png
-						<img src="../img/weixin.png" class="img-thumbnail" style="width:136px;" />
+					<div class="col-4 qrcode">
+						<img src="https://uploadfiles.nowcoder.com/app/app_download.png" class="img-thumbnail" style="width:136px;" />
 					</div>
 					<!-- 公司信息 -->
 					<div class="col-8 detail-info">

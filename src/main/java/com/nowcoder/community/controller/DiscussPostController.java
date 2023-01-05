@@ -2,10 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.entity.*;
 import com.nowcoder.community.event.EventProducer;
-import com.nowcoder.community.service.CommentService;
-import com.nowcoder.community.service.DiscussPostService;
-import com.nowcoder.community.service.LikeService;
-import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.service.*;
 import com.nowcoder.community.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,9 @@ public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private CollectService collectService;
 
     @Autowired
     private EventProducer eventProducer;
@@ -134,11 +134,21 @@ public class DiscussPostController implements CommunityConstant {
         model.addAttribute("user", user);
         // 点赞数量
         long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
+        System.out.println(likeCount);
         model.addAttribute("likeCount", likeCount);
         // 点赞状态
         int likeStatus = hostHolder.getUser() == null ? 0 :
                 likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeStatus", likeStatus);
+        System.out.println(likeStatus);
+
+        // 收藏数量
+        long CollectCount = collectService.findEntityCollectCount(ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("CollectCount", CollectCount);
+        // 收藏状态
+        int CollectStatus = hostHolder.getUser() == null ? 0 :
+                collectService.findEntityCollectStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("CollectStatus", CollectStatus);
 
         // 评论分页信息
         page.setLimit(5);
