@@ -2,10 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.entity.*;
 import com.nowcoder.community.event.EventProducer;
-import com.nowcoder.community.service.CommentService;
-import com.nowcoder.community.service.DiscussPostService;
-import com.nowcoder.community.service.LikeService;
-import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.service.*;
 import com.nowcoder.community.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class DiscussPostController implements CommunityConstant {
     private DiscussPostService discussPostService;
 
     @Autowired
+    private PostDraftService postDraftService;
+
+    @Autowired
     private HostHolder hostHolder;
 
     @Autowired
@@ -45,11 +45,6 @@ public class DiscussPostController implements CommunityConstant {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @RequestMapping(path = "/uploadPost", method = RequestMethod.GET)
-    public String getPostPage() {
-        return "/site/add-post";
-    }
 
     @RequestMapping(value = "/uploadImg",method = RequestMethod.POST)
     @ResponseBody
@@ -93,9 +88,14 @@ public class DiscussPostController implements CommunityConstant {
         return we;
     }
 
+    @RequestMapping(path = "/uploadPost", method = RequestMethod.GET)
+    public String getPostPage() {
+        return "/site/add-post";
+    }
+
     @RequestMapping(path = "/uploadPost", method = RequestMethod.POST)
     @ResponseBody
-    // 将帖子内容存入数据库
+    // 发布帖子 将帖子内容存入数据库
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
         if (user == null) {
@@ -123,7 +123,75 @@ public class DiscussPostController implements CommunityConstant {
         // 报错的情况,将来统一处理.
         return CommunityUtil.getJSONString(0, "发布成功!");
     }
+
+    @RequestMapping(value = "/uploadDraft", method = RequestMethod.POST)
+    @ResponseBody
+    // 将草稿内容存入数据库
+    public String addPostDraft(String title, String content) {
+        User user = hostHolder.getUser();
+        if (user == null) {
+            return CommunityUtil.getJSONString(403, "你还没有登录哦!");
+        }
+        PostDraft draft = new PostDraft();
+        draft.setUserId(user.getId());
+        draft.setTitle(title);
+        draft.setContent(content);
+        draft.setCreateTime(new Date());
+        postDraftService.addPostDraft(draft);
+        // 报错的情况,将来统一处理.
+        return CommunityUtil.getJSONString(0, "草稿保存成功!");
+    }
+
+    @RequestMapping(value = "/Draft2Post", method = RequestMethod.POST)
+    @ResponseBody
+    // 将草稿箱内容作为帖子发出 与正常发帖唯一不同的逻辑就是发完帖需要将草稿箱清空
+    public String Draft2Post(String title, String content) {
+        User user = hostHolder.getUser();
+        if (user == null) {
+            return CommunityUtil.getJSONString(403, "你还没有登录哦!");
+        }
+        DiscussPost post = new DiscussPost();
+        post.setUserId(user.getId());
+        post.setTitle(title);
+        post.setContent(content);
+        post.setCreateTime(new Date());
+        discussPostService.addDiscussPost(post);
+        postDraftService.deletePostDraft(user.getId());
+
+        // 触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fireEvent(event);
+
+        // 计算帖子分数
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, post.getId());
+
+        // 报错的情况,将来统一处理.
+        return CommunityUtil.getJSONString(0, "发布成功!");
+    }
+
+    @RequestMapping(path = "/draftBox", method = RequestMethod.GET)
+    // 将草稿箱内容回显
+    public String getPostDraft(Model model) {
+        User user = hostHolder.getUser();
+        if (user == null) {
+            return CommunityUtil.getJSONString(403, "你还没有登录哦!");
+        }
+        // 从数据库中拿到草稿内容 显示在页面上
+        PostDraft draft = postDraftService.findDiscussPostByUserId(user.getId());
+        if(draft != null){
+            model.addAttribute("title", draft.getTitle());
+            model.addAttribute("content",draft.getContent());
+        }
+        return "/site/draft-box";
+    }
+
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
+    // 查看帖子详情内容
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 帖子
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
