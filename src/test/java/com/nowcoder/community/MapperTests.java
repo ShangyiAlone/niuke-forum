@@ -4,10 +4,8 @@ import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.LoginTicketMapper;
 import com.nowcoder.community.dao.MessageMapper;
 import com.nowcoder.community.dao.UserMapper;
-import com.nowcoder.community.entity.DiscussPost;
-import com.nowcoder.community.entity.LoginTicket;
-import com.nowcoder.community.entity.Message;
-import com.nowcoder.community.entity.User;
+import com.nowcoder.community.entity.*;
+import com.nowcoder.community.service.PostDraftService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,18 @@ public class MapperTests {
     @Autowired
     private MessageMapper messageMapper;
 
+    @Autowired
+    private PostDraftService postDraftService;
+
+    @Test
+    public void testDraft(){
+        PostDraft draft = new PostDraft();
+        draft.setUserId(1);
+        draft.setContent("haiad");
+        draft.setTitle("111");
+        draft.setCreateTime(new Date());
+        postDraftService.addPostDraft(draft);
+    }
     @Test
     public void testSelectUser() {
         User user = userMapper.selectById(101);

@@ -74,7 +74,10 @@
                         <!--                    <p th:text="${hello}">hello</p>-->
                     </div>
                     <p></p>
-                    <button id="publishBtn" class="ui button" type="submit">发布</button>
+                    <div class ="btn">
+                        <button id="publishBtn" class="btn btn-primary " type="submit">确认发布</button>
+                        <button id="storageBtn" class="btn btn-primary " type="submit">保存至草稿箱</button>
+                    </div>
                 </div>
                 <div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -189,9 +192,11 @@
         editor.customConfig.uploadImgServer = 'http://localhost:8080/community/discuss/uploadImg'
         // 将图片大小限制为 10M
         editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024;
-        editor.create()
+        editor.create();
+
         $(function(){
             $("#publishBtn").click(publish);
+            $("#storageBtn").click(storage);
         });
         function publish() {
             // 获取标题和内容
@@ -200,6 +205,31 @@
             // 发送异步请求(POST)
             $.post(
                 CONTEXT_PATH + "/discuss/uploadPost",
+                {"title":title,"content":content},
+                function(data) {
+                    data = $.parseJSON(data);
+                    // 在提示框中显示返回消息
+                    $("#hintBody").text(data.code);
+                    // 显示提示框
+                    $("#hintModal").modal("show");
+                    // 2秒后,自动隐藏提示框
+                    setTimeout(function(){
+                        $("#hintModal").modal("hide");
+                        // 跳转回首页
+                        if(data.code == 0) {
+                            window.location.href= CONTEXT_PATH + "/index";
+                        }
+                    }, 2000);
+                }
+            );
+        }
+        function storage() {
+            // 获取标题和内容
+            var title = $("#recipient-name").val();
+            var content = editor.txt.html()
+            // 发送异步请求(POST)
+            $.post(
+                CONTEXT_PATH + "/discuss/uploadDraft",
                 {"title":title,"content":content},
                 function(data) {
                     data = $.parseJSON(data);
