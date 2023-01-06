@@ -25,10 +25,10 @@
                              https://www.cnblogs.com/liupeifeng3514/p/10214392.html
 
 启动项目前：
-1.  本地启动redis
-2.  进入kafka安装目录 用命令行启动zookeeper：bin\windows\zookeeper-server-start.bat config\zookeeper.properties
-3.  不要关闭以上命令窗口 新开一个命令窗口 进入kafka安装目录启动kafka：bin\windows\kafka-server-start.bat config\server.properties
-4.  进入elasticsearch目录下的bin文件夹 双击elasticsearch.bat 启动服务
+1. 本地启动redis
+2. 进入kafka安装目录 用命令行启动zookeeper：bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+3. 不要关闭以上命令窗口 新开一个命令窗口 进入kafka安装目录启动kafka：bin\windows\kafka-server-start.bat config\server.properties
+4. 进入elasticsearch目录下的bin文件夹 双击elasticsearch.bat 启动服务
 
 关闭项目前：
  一定不能直接关闭kafka的命令窗口！！而是通过输入指令来关闭服务！
