@@ -1,9 +1,8 @@
 # 牛客论坛
 
 #### 介绍
-牛客论坛
-
-
+仿牛客论坛的知识库系统项目
+在原项目基础上，还实现了 富文本编辑器发布帖子、发帖草稿箱、帖子的收藏、个人收藏夹、帖子内容截长图分享等功能
 
 #### 软件版本
 
@@ -20,9 +19,8 @@
 3. consumer.properties中 设置 group.id=community-consumer-group
 4. elasticsearch安装目录下 config/elasticsearch.yml 设置  cluster.name: nowcoder
 5. 安装qq群里的RKCSSVA.exe(wkhtmltopdf) 到目录d:/work/wkhtmltopdf下 也可以自己修改application.properties
-6. 因为utf-8不兼容富文本编辑器的emoji表情 故需要将discuss__post表中对应的content列进行字符集的重新配置 
-    详见这两篇博客 https://blog.csdn.net/qq_43461877/article/details/103101859    
-                             https://www.cnblogs.com/liupeifeng3514/p/10214392.html
+6. 因为utf-8不兼容富文本编辑器的emoji表情 故需要将discuss_post表中对应的content列进行字符集的重新配置 
+   详见博客方法一：https://www.cnblogs.com/liupeifeng3514/p/10214392.html
 
 启动项目前：
 1. 本地启动redis

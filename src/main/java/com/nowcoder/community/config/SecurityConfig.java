@@ -32,11 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                 .antMatchers(
                         "/user/setting",
                         "/user/upload",
-                        "/discuss/add",
+                        "/discuss//draftBox",
+                        "/discuss//uploadPost",
                         "/comment/add/**",
                         "/letter/**",
                         "/notice/**",
                         "/like",
+                        "/collect",
                         "/follow",
                         "/unfollow"
                 )
