@@ -78,6 +78,7 @@ public class SearchController implements CommunityConstant {
                 });
                 break;
             case 1:
+                // 按热度排序展示
                 Collections.sort(discussPosts, new Comparator<Map<String, Object>>() {
                     @Override
                     public int compare(Map<String, Object> o1, Map<String, Object> o2) {
@@ -96,6 +97,7 @@ public class SearchController implements CommunityConstant {
                 });
                 break;
             case 2:
+                // 按点赞数排序展示
                 Collections.sort(discussPosts, new Comparator<Map<String, Object>>() {
                     @Override
                     public int compare(Map<String, Object> o1, Map<String, Object> o2) {
@@ -114,6 +116,7 @@ public class SearchController implements CommunityConstant {
                 });
                 break;
             case 3:
+                // 按回帖数排序展示
                 Collections.sort(discussPosts, new Comparator<Map<String, Object>>() {
                     @Override
                     public int compare(Map<String, Object> o1, Map<String, Object> o2) {
