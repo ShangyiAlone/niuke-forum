@@ -61,6 +61,25 @@
 		<!-- 内容 -->
 		<div class="main">
 			<div class="container">
+
+				<div class="position-relative">
+					<!-- 筛选条件 -->
+					<ul class="nav nav-tabs mb-3">
+						<li class="nav-item">
+							<a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/search(keyword=${keyword},orderMode=0)}">最新</a>
+						</li>
+						<li class="nav-item">
+							<a th:class="|nav-link ${orderMode==1?'active':''}|" th:href="@{/search(keyword=${keyword},orderMode=1)}">最热</a>
+						</li>
+						<li class="nav-item">
+							<a th:class="|nav-link ${orderMode==2?'active':''}|" th:href="@{/search(keyword=${keyword},orderMode=2)}">最多赞</a>
+						</li>
+						<li class="nav-item">
+							<a th:class="|nav-link ${orderMode==3?'active':''}|" th:href="@{/search(keyword=${keyword},orderMode=3)}">最多讨论</a>
+						</li>
+					</ul>
+				</div>
+
 				<h6><b class="square"></b> 相关帖子</h6>
 				<!-- 帖子列表 -->
 				<ul class="list-unstyled mt-4">
