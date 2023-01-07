@@ -54,6 +54,9 @@ public class UserController implements CommunityConstant {
     private LikeService likeService;
 
     @Autowired
+    private CollectService collectService;
+
+    @Autowired
     private FollowService followService;
 
     @Autowired
@@ -154,6 +157,11 @@ public class UserController implements CommunityConstant {
 
         // 用户
         model.addAttribute("user", user);
+
+        // 点赞数量
+        int colectCount = collectService.findUserCollectCount(userId);
+        model.addAttribute("colectCount", colectCount);
+
         // 点赞数量
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
