@@ -75,18 +75,12 @@ public class RedisTests {
 
     @Test
     public void testSortedSets() {
-        String redisKey = "test:students";
+        String redisKey = "collect:userEntity:150";
 
-        redisTemplate.opsForZSet().add(redisKey, "唐僧", 80);
-        redisTemplate.opsForZSet().add(redisKey, "悟空", 90);
-        redisTemplate.opsForZSet().add(redisKey, "八戒", 50);
-        redisTemplate.opsForZSet().add(redisKey, "沙僧", 70);
-        redisTemplate.opsForZSet().add(redisKey, "白龙马", 60);
 
         System.out.println(redisTemplate.opsForZSet().zCard(redisKey));
-        System.out.println(redisTemplate.opsForZSet().score(redisKey, "八戒"));
-        System.out.println(redisTemplate.opsForZSet().reverseRank(redisKey, "八戒"));
-        System.out.println(redisTemplate.opsForZSet().reverseRange(redisKey, 0, 2));
+
+        System.out.println(redisTemplate.opsForZSet().reverseRange(redisKey,0,4));
     }
 
     @Test

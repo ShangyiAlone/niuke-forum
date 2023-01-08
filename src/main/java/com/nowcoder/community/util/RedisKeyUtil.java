@@ -8,6 +8,7 @@ public class RedisKeyUtil {
 
     private static final String PREFIX_ENTITY_COLLECT = "collect:entity";
     private static final String PREFIX_USER_COLLECT = "collect:user";
+    private static final String PREFIX_USER_entity_COLLECT = "collect:userEntity";
 
     private static final String PREFIX_FOLLOWEE = "followee";
     private static final String PREFIX_FOLLOWER = "follower";
@@ -40,6 +41,12 @@ public class RedisKeyUtil {
     // like:user:userId -> int
     public static String getUserCollectKey(int entityId) {
         return PREFIX_USER_COLLECT + SPLIT + entityId;
+    }
+
+    // 某个用户的收藏列表
+    // colect:userId:entityType -> zset(entityId,now)
+    public static String getCollectKey(int userId) {
+        return PREFIX_USER_entity_COLLECT + SPLIT + userId;
     }
 
 

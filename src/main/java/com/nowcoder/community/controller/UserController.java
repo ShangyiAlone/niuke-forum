@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -61,6 +62,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private CommentService commentService;
@@ -241,4 +245,36 @@ public class UserController implements CommunityConstant {
 
         return "/site/my-reply";
     }
+
+    // 我的收藏
+    @RequestMapping(path = "/mycollect/{userId}", method = RequestMethod.GET)
+    public String getMycollect(@PathVariable("userId") int userId, Page page, Model model) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
+        model.addAttribute("user", user);
+
+        // 分页信息
+        page.setPath("/user/mycollect/" + userId);
+        page.setRows(discussPostService.findDiscussPostRows(userId));
+
+        // 帖子列表
+        List<DiscussPost> discussList = discussPostService
+                .findDiscussPosts(userId, 1, 1,0);
+        List<Map<String, Object>> discussVOList = new ArrayList<>();
+        if (discussList != null) {
+            for (DiscussPost post : discussList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("discussPost", post);
+                map.put("likeCount", likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId()));
+                discussVOList.add(map);
+            }
+        }
+        model.addAttribute("discussPostsList", discussVOList);
+
+        return "/site/my-collect";
+    }
+
+
 }
