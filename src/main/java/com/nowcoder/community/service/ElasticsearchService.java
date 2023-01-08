@@ -42,7 +42,7 @@ public class ElasticsearchService {
     public void deleteDiscussPost(int id) {
         discussRepository.deleteById(id);
     }
-
+    // 搜索：定义SearchQuery，确定搜素内容，排序方式，高亮等。
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(keyword, "title", "content"))
@@ -54,7 +54,7 @@ public class ElasticsearchService {
                         new HighlightBuilder.Field("title").preTags("<em>").postTags("</em>"),
                         new HighlightBuilder.Field("content").preTags("<em>").postTags("</em>")
                 ).build();
-
+        // 重写mapResults函数，得到高亮数据。
         return elasticTemplate.queryForPage(searchQuery, DiscussPost.class, new SearchResultMapper() {
             @Override
             public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> aClass, Pageable pageable) {

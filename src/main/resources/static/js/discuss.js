@@ -23,28 +23,30 @@ function like(btn, entityType, entityId, entityUserId, postId) {
 
 // 分享
 function share(btn, entityType, entityId, entityUserId, postId) {
-    let shareUrl;
     $.get(
         CONTEXT_PATH + "/share"+"?htmlUrl=http://localhost:8080/community/discuss/detail/"+postId,
         {"entityType":entityType,"entityId":entityId,"entityUserId":entityUserId,"postId":postId},
         function(data) {
             data = $.parseJSON(data);
             if(data.code == 0) {
-                shareUrl=data.shareUrl;
-
-                window.location.href=shareUrl;
-                setTimeout(function (){
-                    flush(shareUrl);
-                },2000);
+                getImage(data.shareUrl);
             } else {
                 alert(data.msg);
             }
         }
     );
 }
-// 延时刷新
-function flush(shareUrl) {
-    window.location.href=shareUrl;
+// 分享后在页面获取图片
+function getImage(shareUrl){
+    console.log("aa")
+    $.get(
+        shareUrl,
+
+        function(){
+            window.location.href=shareUrl;
+        }
+    );
+
 }
 
 function collect(btn, entityType, entityId, entityUserId, postId) {

@@ -30,8 +30,8 @@
 
 关闭项目前：
  一定不能直接关闭kafka的命令窗口！！而是通过输入指令来关闭服务！
-1.  先关闭kafka：bin\windows\kafka-server-stop.bat
-2.  再关闭zookeeper：bin\windows\zookeeper-server-stop.bat
+1. 先关闭kafka：bin\windows\kafka-server-stop.bat
+2. 再关闭zookeeper：bin\windows\zookeeper-server-stop.bat
 
 
 #### 参与贡献
