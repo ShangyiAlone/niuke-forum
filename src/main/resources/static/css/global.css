@@ -179,3 +179,13 @@ em {
 .ml50 {
 	margin-left: 50px;
 }
+/*发布文章与草稿箱按钮样式*/
+.publishButton {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+#publishBtn {
+	margin-right: 15px;
+}
