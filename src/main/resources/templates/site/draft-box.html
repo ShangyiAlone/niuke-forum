@@ -74,21 +74,26 @@
                 </div>
                 <p></p>
                 <div class ="btn">
-                    <button id="publishBtn" class="btn btn-primary " type="submit">确认发布</button>
-                    <button id="storageBtn" class="btn btn-primary " type="submit">保存至草稿箱</button>
+                    <button id="publishBtn" class="btn1 btn-primary " type="submit">确认发布</button>
+                    <button id="storageBtn" class="btn1 btn-primary " type="submit">保存至草稿箱</button>
                 </div>
             </div>
-            <div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="hintModalLabel">提示</h5>
-                        </div>
-                        <div class="modal-body" id="hintBody">
-                            成功保存至草稿箱!
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+
+    <!--    弹窗-->
+
+    <div class="wrap-dialog hide">
+        <div class="dialog">
+            <div class="dialog-header">
+                <span class="dialog-title">提示</span>
+            </div>
+            <div class="dialog-body">
+                <span class="dialog-message">保存草稿箱？</span>
+            </div>
+            <div class="dialog-footer">
+                <input type="button" class="btn1" id="confirm" value="确认" />
+                <input type="button" class="btn1 ml50" id="cancel" value="取消" />
             </div>
         </div>
     </div>
@@ -161,7 +166,6 @@
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/wangEditor/10.0.13/wangEditor.min.js"></script>
 <script th:src="@{/js/global.js}"></script>
-<script th:src="@{js/index.js}"></script>
 <!--     富文本编辑器配置和按钮异步请求的js处理-->
 <script type="text/javascript">
     var E = window.wangEditor
@@ -192,60 +196,79 @@
     // 将图片大小限制为 10M
     editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024;
     editor.create();
+</script>
 
-    $(function(){
-        $("#publishBtn").click(publish);
-        $("#storageBtn").click(storage);
+<script>
+    // 发布文章弹窗
+    $(document).ready(function(){
+        $('#publishBtn').click(function(){
+            var message = "确认发布文章？";
+            dialogBox(message,
+                function () {
+                    console.log("confirmed");
+                    var title = $("#recipient-name").val();
+                    var content = editor.txt.html()
+                    console.log(content);
+                    // 发送异步请求(POST)
+                    $.post(
+                        CONTEXT_PATH + "/discuss/uploadPost",
+                        {"title":title,"content":content}
+                    );
+                    // 跳转回首页
+                    window.location.href= CONTEXT_PATH + "/index";
+                },
+                function(){
+                    console.log("canceled");
+                    // do something
+                }
+            );
+        });
+
     });
-    function publish() {
-        // 获取标题和内容
-        var title = $("#recipient-name").val();
-        var content = editor.txt.html()
-        // 发送异步请求(POST)
-        $.post(
-            CONTEXT_PATH + "/discuss/Draft2Post",
-            {"title":title,"content":content},
-            function(data) {
-                data = $.parseJSON(data);
-                // 在提示框中显示返回消息
-                $("#hintBody").text(data.code);
-                // 显示提示框
-                $("#hintModal").modal("show");
-                // 2秒后,自动隐藏提示框
-                setTimeout(function(){
-                    $("#hintModal").modal("hide");
+
+    // 草稿箱弹窗
+    $(document).ready(function(){
+        $('#storageBtn').click(function(){
+            var message = "保存草稿箱？";
+            dialogBox(message,
+                function () {
+                    console.log("confirmed");
+                    var title = $("#recipient-name").val();
+                    var content = editor.txt.html()
+                    console.log(content);
+                    // 发送异步请求(POST)
+                    $.post(
+                        CONTEXT_PATH + "/discuss/uploadDraft",
+                        {"title":title,"content":content},
+                    );
                     // 跳转回首页
-                    if(data.code == 0) {
-                        window.location.href= CONTEXT_PATH + "/index";
-                    }
-                }, 2000);
-            }
-        );
-    }
-    function storage() {
-        // 获取标题和内容
-        var title = $("#recipient-name").val();
-        var content = editor.txt.html()
-        // 发送异步请求(POST)
-        $.post(
-            CONTEXT_PATH + "/discuss/uploadDraft",
-            {"title":title,"content":content},
-            function(data) {
-                data = $.parseJSON(data);
-                // 在提示框中显示返回消息
-                $("#hintBody").text(data.code);
-                // 显示提示框
-                $("#hintModal").modal("show");
-                // 2秒后,自动隐藏提示框
-                setTimeout(function(){
-                    $("#hintModal").modal("hide");
-                    // 跳转回首页
-                    if(data.code == 0) {
-                        window.location.href= CONTEXT_PATH + "/index";
-                    }
-                }, 2000);
-            }
-        );
+                    window.location.href= CONTEXT_PATH + "/index";
+                },
+                function(){
+                    console.log("canceled");
+                    // do something
+                }
+            );
+        });
+
+    });
+
+    function dialogBox(message, yesCallback, noCallback){
+        if(message){
+            $('.dialog-message').html(message);
+        }
+        // 显示遮罩和对话框
+        $('.wrap-dialog').removeClass("hide");
+        // 确定按钮
+        $('#confirm').click(function(){
+            $('.wrap-dialog').addClass("hide");
+            yesCallback();
+        });
+        // 取消按钮
+        $('#cancel').click(function(){
+            $('.wrap-dialog').addClass("hide");
+            noCallback();
+        });
     }
 </script>
 </body>

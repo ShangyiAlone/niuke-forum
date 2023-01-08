@@ -221,6 +221,8 @@
                         CONTEXT_PATH + "/discuss/uploadPost",
                         {"title":title,"content":content}
                     );
+                    // 跳转回首页
+                    window.location.href= CONTEXT_PATH + "/index";
                 },
                 function(){
                     console.log("canceled");
@@ -246,6 +248,8 @@
                         CONTEXT_PATH + "/discuss/uploadDraft",
                         {"title":title,"content":content},
                     );
+                    // 跳转回首页
+                    window.location.href= CONTEXT_PATH + "/index";
                 },
                 function(){
                     console.log("canceled");
