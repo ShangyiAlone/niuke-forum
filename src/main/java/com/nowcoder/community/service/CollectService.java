@@ -1,6 +1,7 @@
 package com.nowcoder.community.service;
 
 import com.nowcoder.community.entity.DiscussPost;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class CollectService {
+public class CollectService implements CommunityConstant {
+
+    @Autowired
+    private LikeService likeService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -84,13 +88,12 @@ public class CollectService {
 
         List<Map<String, Object>> list = new ArrayList<>();
         for (Integer targetId : targetIds) {
-            System.out.println("id");
-            System.out.println(targetId);
             Map<String, Object> map = new HashMap<>();
-            DiscussPost user = DiscussPostService.findDiscussPostById(targetId);
-            map.put("DiscussPost", user);
-            Double score = redisTemplate.opsForZSet().score(userKey, targetId);
-            map.put("collectTime", new Date(score.longValue()));
+            DiscussPost post = DiscussPostService.findDiscussPostById(targetId);
+            map.put("DiscussPost", post);
+            map.put("likeCount", likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId()));
+//            Double score = redisTemplate.opsForZSet().score(userKey, targetId);
+//            map.put("collectTime", new Date(score.longValue()));
             list.add(map);
         }
 
