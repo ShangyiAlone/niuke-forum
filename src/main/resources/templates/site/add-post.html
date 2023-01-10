@@ -76,7 +76,7 @@
                 <p></p>
                 <div class ="publishButton">
                     <button id="publishBtn" class="btn btn-primary " type="submit">确认发布</button>
-                    <button id="storageBtn" class="btn btn-primary " type="submit">保存至草稿箱</button>
+                    <button id="storageBtn" class="btn btn-primary " type="submit">保存草稿箱</button>
                 </div>
             </div>
         </div>
@@ -236,7 +236,7 @@
     // 草稿箱弹窗
     $(document).ready(function(){
         $('#storageBtn').click(function(){
-            var message = "保存草稿箱？";
+            var message = "确认保存至草稿箱？";
             dialogBox(message,
                 function () {
                     console.log("confirmed");

@@ -73,8 +73,10 @@ public class ElasticsearchTests {
 
     @Test
     public void testDelete() {
-        // discussRepository.deleteById(231);
-        discussRepository.deleteAll();
+         discussRepository.deleteById(319);
+         discussRepository.deleteById(320);
+         discussRepository.deleteById(321);
+//        discussRepository.deleteAll();
     }
 
     @Test
