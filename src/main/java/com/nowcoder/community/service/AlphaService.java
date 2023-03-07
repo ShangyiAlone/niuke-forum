@@ -84,6 +84,7 @@ public class AlphaService {
         post.setCreateTime(new Date());
         discussPostMapper.insertDiscussPost(post);
 
+        //这步报错，观测是否回滚
         Integer.valueOf("abc");
 
         return "ok";
@@ -114,6 +115,7 @@ public class AlphaService {
                 post.setCreateTime(new Date());
                 discussPostMapper.insertDiscussPost(post);
 
+                //这步报错，观测是否回滚
                 Integer.valueOf("abc");
 
                 return "ok";

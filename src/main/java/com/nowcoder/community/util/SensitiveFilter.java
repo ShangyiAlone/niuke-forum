@@ -17,6 +17,7 @@ import java.util.Map;
 @Component
 public class SensitiveFilter {
 
+    // 实例化log
     private static final Logger logger = LoggerFactory.getLogger(SensitiveFilter.class);
 
     // 替换符
@@ -117,7 +118,9 @@ public class SensitiveFilter {
                 tempNode = rootNode;
             } else {
                 // 检查下一个字符
-                position++;
+                if(position<text.length()-1){
+                    position++;
+                }
             }
         }
 

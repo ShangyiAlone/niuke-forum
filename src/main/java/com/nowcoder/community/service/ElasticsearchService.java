@@ -42,6 +42,7 @@ public class ElasticsearchService {
     public void deleteDiscussPost(int id) {
         discussRepository.deleteById(id);
     }
+
     // 搜索：定义SearchQuery，确定搜素内容，排序方式，高亮等。
     public Page<DiscussPost> searchDiscussPost(String keyword, int current, int limit) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()

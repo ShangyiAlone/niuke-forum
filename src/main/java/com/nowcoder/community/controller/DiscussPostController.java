@@ -54,7 +54,7 @@ public class DiscussPostController implements CommunityConstant {
     // 上传帖子中的图片至本地服务器
     public WangEditor uploadImg(@Param("file") MultipartFile file) {
         //本地使用,上传位置
-        String rootPath ="E://group_repository//uploads//";
+        String rootPath ="group_repository//uploads//";
         //文件的完整名称,如spring.jpeg
         String filename = file.getOriginalFilename();
         //文件名,如spring
